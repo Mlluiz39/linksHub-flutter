@@ -1,0 +1,35 @@
+name: social_links_crud
+description: App Flutter para CRUD de links de redes sociais
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  # Atualize para >=3.0.0 se seu Flutter/Dart já for 3.x
+  sdk: '>=2.19.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Banco local
+  sqflite: ^2.3.0
+  path: ^1.8.3
+  path_provider: ^2.0.15 # recomendado para localizar diretórios
+  url_launcher: ^6.1.12
+
+  # Ícones sociais
+  font_awesome_flutter: ^10.5.0
+  cupertino_icons: ^1.0.5 # boa prática adicionar
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
