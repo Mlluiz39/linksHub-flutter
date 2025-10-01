@@ -24,6 +24,7 @@ dependencies:
   cupertino_icons: ^1.0.5 # boa prática adicionar
   flutter_launcher_icons: ^0.14.4
   http: ^1.5.0
+  google_sign_in: ^7.2.0
 
 dev_dependencies:
   flutter_test:

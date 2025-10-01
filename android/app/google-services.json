@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "82740014609",
+    "project_id": "comexamplelinkshub",
+    "storage_bucket": "comexamplelinkshub.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:82740014609:android:949d8be727b1e839a80bb0",
+        "android_client_info": {
+          "package_name": "com.example.linksHub"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtf9_9LTiA--mdE3zqnR61UY79qXU5OPM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.social_links_crud"
+    namespace = "com.example.linkshub_new"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -21,9 +21,8 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.social_links_crud"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
+        applicationId = "com.example.linkshub_new"
+        resValue("string", "default_web_client_id", "37636929163-4l0tgcuaqnp4csarn2kqbalbl0diejpo.apps.googleusercontent.com")
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode

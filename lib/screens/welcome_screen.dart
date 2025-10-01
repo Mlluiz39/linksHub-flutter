@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../services/auth_service.dart';
 import 'home_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -15,6 +16,9 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   late Animation<Offset> _slideButtonAnimation;
   late Animation<double> _fadeAnimation;
 
+  final AuthService _authService = AuthService();
+  bool _isLoading = false;
+
   @override
   void initState() {
     super.initState();
@@ -24,7 +28,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       duration: const Duration(seconds: 1),
     );
 
-    // Logo e título deslizam de cima
     _slideLogoAnimation = Tween<Offset>(
       begin: const Offset(0, -0.5),
       end: Offset.zero,
@@ -32,7 +35,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       CurvedAnimation(parent: _controller, curve: Curves.easeOut),
     );
 
-    // Botão desliza de baixo
     _slideButtonAnimation = Tween<Offset>(
       begin: const Offset(0, 0.5),
       end: Offset.zero,
@@ -40,7 +42,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       CurvedAnimation(parent: _controller, curve: Curves.easeOut),
     );
 
-    // Fade geral
     _fadeAnimation = Tween<double>(
       begin: 0,
       end: 1,
@@ -48,13 +49,51 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       CurvedAnimation(parent: _controller, curve: Curves.easeIn),
     );
 
-    _controller.forward(); // inicia a animação
+    _controller.forward();
   }
 
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  Future<void> _signInWithGoogle() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final success = await _authService.signInWithGoogle();
+
+      if (success && mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const HomeScreen()),
+        );
+      } else if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Falha ao fazer login com Google. Tente novamente.'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erro: ${e.toString()}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
   }
 
   @override
@@ -73,41 +112,26 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Logo animada
                 SlideTransition(
                   position: _slideLogoAnimation,
                   child: FadeTransition(
                     opacity: _fadeAnimation,
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black26,
-                            blurRadius: 10,
-                            offset: Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      child: CircleAvatar(
-                        radius: 60,
-                        backgroundColor: Colors.white,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(50),
-                          child: Image.asset(
-                            'assets/images/logo.webp',
-                            width: 100,
-                            height: 100,
-                            fit: BoxFit.cover,
-                          ),
+                    child: CircleAvatar(
+                      radius: 60,
+                      backgroundColor: Colors.white,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(50),
+                        child: Image.asset(
+                          'assets/images/logo.webp',
+                          width: 100,
+                          height: 100,
+                          fit: BoxFit.cover,
                         ),
                       ),
                     ),
                   ),
                 ),
                 const SizedBox(height: 30),
-
-                // Título animado
                 FadeTransition(
                   opacity: _fadeAnimation,
                   child: const Text(
@@ -120,8 +144,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   ),
                 ),
                 const SizedBox(height: 15),
-
-                // Subtítulo animado
                 FadeTransition(
                   opacity: _fadeAnimation,
                   child: const Padding(
@@ -137,37 +159,44 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   ),
                 ),
                 const SizedBox(height: 50),
-
-                // Botão animado
                 SlideTransition(
                   position: _slideButtonAnimation,
                   child: FadeTransition(
                     opacity: _fadeAnimation,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) => const HomeScreen(),
+                    child: _isLoading
+                        ? const CircularProgressIndicator(
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(Colors.white),
+                          )
+                        : ElevatedButton(
+                            onPressed: _signInWithGoogle,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              foregroundColor: Colors.blue,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 50, vertical: 15),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Image.network(
+                                  'https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg',
+                                  height: 24,
+                                ),
+                                const SizedBox(width: 10),
+                                const Text(
+                                  'Entrar com Google',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: Colors.blue,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 50, vertical: 15),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
-                      child: const Text(
-                        'Começar',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
                   ),
                 ),
               ],

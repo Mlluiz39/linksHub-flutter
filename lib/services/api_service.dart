@@ -1,14 +1,23 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../../../models/social_link.dart';
+import '../models/social_link.dart';
+import 'auth_service.dart';
 
 class ApiService {
   static const String baseUrl =
-      "https://api.mlluizdevtech.com.br/links"; // troque pelo seu endpoint real
+      "https://api.mlluizdevtech.com.br"; // URL base corrigida
+      
+  final AuthService _authService = AuthService();
 
   // Buscar todos
   Future<List<SocialLink>> getAllSocialLinks() async {
-    final response = await http.get(Uri.parse("$baseUrl/social_links"));
+    final response = await http.get(
+      Uri.parse("$baseUrl/links/social_links"),
+      headers: {
+        "Authorization": "Bearer ${_authService.token}",
+        "Content-Type": "application/json"
+      },
+    );
 
     if (response.statusCode == 200) {
       final List data = jsonDecode(response.body);
@@ -20,7 +29,13 @@ class ApiService {
 
   // Buscar por ID
   Future<SocialLink?> getSocialLink(int id) async {
-    final response = await http.get(Uri.parse("$baseUrl/social_links/$id"));
+    final response = await http.get(
+      Uri.parse("$baseUrl/links/social_links/$id"),
+      headers: {
+        "Authorization": "Bearer ${_authService.token}",
+        "Content-Type": "application/json"
+      },
+    );
     if (response.statusCode == 200) {
       return SocialLink.fromMap(jsonDecode(response.body));
     }
@@ -30,8 +45,11 @@ class ApiService {
   // Criar
   Future<int> insertSocialLink(SocialLink link) async {
     final response = await http.post(
-      Uri.parse("$baseUrl/social_links"),
-      headers: {"Content-Type": "application/json"},
+      Uri.parse("$baseUrl/links/social_links"),
+      headers: {
+        "Authorization": "Bearer ${_authService.token}",
+        "Content-Type": "application/json"
+      },
       body: jsonEncode(link.toMap()),
     );
 
@@ -46,8 +64,11 @@ class ApiService {
   // Atualizar
   Future<bool> updateSocialLink(SocialLink link) async {
     final response = await http.put(
-      Uri.parse("$baseUrl/social_links/${link.id}"),
-      headers: {"Content-Type": "application/json"},
+      Uri.parse("$baseUrl/links/social_links/${link.id}"),
+      headers: {
+        "Authorization": "Bearer ${_authService.token}",
+        "Content-Type": "application/json"
+      },
       body: jsonEncode(link.toMap()),
     );
     return response.statusCode == 200;
@@ -55,14 +76,25 @@ class ApiService {
 
   // Deletar
   Future<bool> deleteSocialLink(int id) async {
-    final response = await http.delete(Uri.parse("$baseUrl/social_links/$id"));
+    final response = await http.delete(
+      Uri.parse("$baseUrl/links/social_links/$id"),
+      headers: {
+        "Authorization": "Bearer ${_authService.token}",
+        "Content-Type": "application/json"
+      },
+    );
     return response.statusCode == 200;
   }
 
   // Buscar por texto
   Future<List<SocialLink>> searchSocialLinks(String query) async {
-    final response =
-        await http.get(Uri.parse("$baseUrl/social_links/search?q=$query"));
+    final response = await http.get(
+      Uri.parse("$baseUrl/links/social_links/search?q=$query"),
+      headers: {
+        "Authorization": "Bearer ${_authService.token}",
+        "Content-Type": "application/json"
+      },
+    );
 
     if (response.statusCode == 200) {
       final List data = jsonDecode(response.body);
