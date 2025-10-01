@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../models/social_link.dart';
-import '../../../services/database_service.dart';
+import '../services/api_service.dart';
 
 class AddEditScreen extends StatefulWidget {
   final SocialLink? socialLink;
@@ -16,7 +16,7 @@ class _AddEditScreenState extends State<AddEditScreen> {
   final _platformController = TextEditingController();
   final _urlController = TextEditingController();
   final _nameController = TextEditingController(); // Controlador para o nome do link
-  final DatabaseService _databaseService = DatabaseService();
+  final ApiService _databaseService = ApiService();
   bool _isLoading = false;
 
   final List<String> _popularPlatforms = [

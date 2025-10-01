@@ -1,4 +1,4 @@
-name: social_links_crud
+name: linksHub
 description: App Flutter para CRUD de links de redes sociais
 
 publish_to: 'none'
@@ -22,6 +22,8 @@ dependencies:
   # Ícones sociais
   font_awesome_flutter: ^10.5.0
   cupertino_icons: ^1.0.5 # boa prática adicionar
+  flutter_launcher_icons: ^0.14.4
+  http: ^1.5.0
 
 dev_dependencies:
   flutter_test:
@@ -33,3 +35,42 @@ flutter:
 
   assets:
     - assets/images/
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: 'assets/images/icon.png'
+  web:
+    generate: true
+    image_path: 'assets/images/icon.png'
+    min_size: 48
+    max_size: 512
+    background_color: '#ffffff'
+    remove_alpha_ios: true
+    adaptive_icon_background: '#ffffff'
+    adaptive_icon_foreground: 'assets/images/icon.png'
+  windows:
+    generate: true
+    image_path: 'assets/images/icon.png'
+    background_color: '#ffffff'
+  macos:
+    generate: true
+    image_path: 'assets/images/icon.png'
+    background_color: '#ffffff'
+  linux:
+    generate: true
+    image_path: 'assets/images/icon.png'
+    background_color: '#ffffff'
+  flavor:
+    dev:
+      android: true
+      ios: true
+      image_path: 'assets/images/icon-dev.png'
+    prod:
+      android: true
+      ios: true
+      image_path: 'assets/images/icon.png'
+    staging:
+      android: true
+      ios: true
+      image_path: 'assets/images/icon-staging.png'

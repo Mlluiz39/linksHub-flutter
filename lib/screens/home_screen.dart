@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../models/social_link.dart';
-import '../../../services/database_service.dart';
+import '../services/api_service.dart';
 import '../../screens/add_edit_screen.dart';
-
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -13,7 +12,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final DatabaseService _databaseService = DatabaseService();
+  final ApiService _databaseService = ApiService();
   List<SocialLink> _socialLinks = [];
   List<SocialLink> _filteredLinks = [];
   final TextEditingController _searchController = TextEditingController();
